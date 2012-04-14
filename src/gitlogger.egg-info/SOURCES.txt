@@ -8,4 +8,5 @@ src/gitlogger.egg-info/SOURCES.txt
 src/gitlogger.egg-info/dependency_links.txt
 src/gitlogger.egg-info/entry_points.txt
 src/gitlogger.egg-info/not-zip-safe
+src/gitlogger.egg-info/requires.txt
 src/gitlogger.egg-info/top_level.txt
