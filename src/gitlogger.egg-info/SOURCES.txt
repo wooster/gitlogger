@@ -1,0 +1,11 @@
+MANIFEST.in
+NEWS.txt
+README.rst
+setup.py
+src/gitlogger/__init__.py
+src/gitlogger.egg-info/PKG-INFO
+src/gitlogger.egg-info/SOURCES.txt
+src/gitlogger.egg-info/dependency_links.txt
+src/gitlogger.egg-info/entry_points.txt
+src/gitlogger.egg-info/not-zip-safe
+src/gitlogger.egg-info/top_level.txt
