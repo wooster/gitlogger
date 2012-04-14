@@ -116,7 +116,7 @@ class Gitlogger(object):
 	def _update_repo_in_path(self, repo, path):
 		cwd = os.getcwd()
 		os.chdir(os.path.join(path, repo.name))
-		git.update()
+		git.pull()
 		os.chdir(cwd)
 	
 	def _user_path(self, username):

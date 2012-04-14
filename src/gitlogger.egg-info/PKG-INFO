@@ -6,18 +6,26 @@ Home-page: http://github.com/wooster
 Author: Andrew Wooster
 Author-email: andrew@apptentive.com
 License: BSD
-Description: This file requires editing
-        ==========================
+Description: gitlogger
+        =========
         
-        Note to the author: Please add something informative to this README *before*
-        releasing your software, as `a little documentation goes a long way`_.  Both
-        README.rst (this file) and NEWS.txt (release notes) will be included in your
-        package metadata which gets displayed in the PyPI page for your project.
+        gitlogger is a tool to download Github repositories and report data about the commits to those repositories.
         
-        You can take a look at the README.txt of other projects, such as repoze.bfg
-        (http://bfg.repoze.org/trac/browser/trunk/README.txt) for some ideas.
+        To add a user:
         
-        .. _`a little documentation goes a long way`: http://www.martinaspeli.net/articles/a-little-documentation-goes-a-long-way
+        gitlogger add_user username password email@example.com
+        
+        To add an email to an existing user:
+        
+        gitlogger add_email username another_email@example.com
+        
+        To pull down or update all the Github repositories for that user:
+        
+        gitlogger update_user username
+        
+        To print the added and removed lines at various timestamps for a user:
+        
+        gitlogger commits username
         
         Credits
         -------
@@ -31,28 +39,12 @@ Description: This file requires editing
         .. _`modern-package-template`: http://pypi.python.org/pypi/modern-package-template
         
         
-        .. This is your project NEWS file which will contain the release notes.
-        .. Example: http://www.python.org/download/releases/2.6/NEWS.txt
-        .. The content of this file, along with README.rst, will appear in your
-        .. project's PyPI page.
-        
-        News
-        ====
-        
-        0.2a1
-        -----
-        
-        *Release date: UNRELEASED*
-        
-        * Example news entry for the in-development version
-        
-        
         0.1
         ---
         
-        *Release date: 15-Mar-2010*
+        *Release date: UNRELEASED*
         
-        * Example news entry for a released version
+        * In Progress.
         
         
 Keywords: git github
