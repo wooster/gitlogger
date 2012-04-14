@@ -3,6 +3,22 @@ gitlogger
 
 gitlogger is a tool to download Github repositories and report data about the commits to those repositories.
 
+To add a user:
+
+gitlogger add_user username password email@example.com
+
+To add an email to an existing user:
+
+gitlogger add_email username another_email@example.com
+
+To pull down or update all the Github repositories for that user:
+
+gitlogger update_user username
+
+To print the added and removed lines at various timestamps for a user:
+
+gitlogger commits username
+
 Credits
 -------
 
