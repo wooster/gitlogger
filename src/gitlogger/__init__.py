@@ -1,8 +1,11 @@
 import biplist
+import iso8601
+import pytz
 import json
 import os 
 from pbs import git
 from pygithub3 import Github
+import re
 import sys
 
 HELP_MESSAGE = '''
@@ -80,30 +83,41 @@ class Gitlogger(object):
 			log_for_repo = self._log_for_repo(repo, repo_path)
 			for line in log_for_repo.splitlines():
 				if line.startswith(">>"):
-					(commit, timestamp, email) = line[2:].split()
+					(commit, timestamp_dt, timestamp_unix, email) = line[2:].split("|")
 					if email in email_addresses:
 						in_user_commit = True
-						current_timestamp = timestamp
-						commits_for_timestamp.setdefault(current_timestamp, {'added':0, 'removed':0})
+						utc_datetime = self.convert_iso8601_to_utc( self.reformat_as_actual_iso8601(timestamp_dt))
+						current_timestamp = utc_datetime
+						commits_for_timestamp.setdefault(current_timestamp, {'added':0, 'removed':0, 'timestamp_local':timestamp_dt})
 					else:
+						print >> sys.stderr, "Unknown email:", email
 						in_user_commit = False
 					continue
 				elif len(line) and in_user_commit:
 					try:
 						(added, removed) = line.split()[0:2]
 						if added != '-':
-							commits_for_timestamp[timestamp]['added'] += int(added)
+							commits_for_timestamp[current_timestamp]['added'] += int(added)
 						if removed != '-':
-							commits_for_timestamp[timestamp]['removed'] += int(removed)
+							commits_for_timestamp[current_timestamp]['removed'] += int(removed)
 					except ValueError as e:
 						print >> sys.stderr, e
 						print >> sys.stderr, "Error on:", line
 		return commits_for_timestamp
 	
+	def reformat_as_actual_iso8601(self, bogus_iso8601_date):
+		reg = r"(\s([+-])(\d\d)(\d\d))"
+		return re.sub(reg, "\\2\\3:\\4", bogus_iso8601_date)
+	
+	def convert_iso8601_to_utc(self, iso8601_date):
+		utc = pytz.utc
+		d = iso8601.parse_date(iso8601_date)
+		return d.astimezone(utc).isoformat()
+	
 	def _log_for_repo(self, repo, path):
 		cwd = os.getcwd()
 		os.chdir(path)
-		output = git("--no-pager", "log", "--no-merges", "--numstat", pretty="format:>>%H %ct %aE")
+		output = git("--no-pager", "log", "--all", "--no-merges", "--numstat", pretty="format:>>%H|%ci|%ct|%aE")
 		os.chdir(cwd)
 		return output
 	
@@ -170,7 +184,7 @@ def main():
 			username = argv[2]
 			logger = Gitlogger()
 			commits = logger.commits_for_user(username)
-			print json.dumps(commits, indent=4)
+			print json.dumps(commits, indent=4, sort_keys=True)
 		else:
 			raise Usage("Unknown action given: %s" % action)
 	except Usage as err:

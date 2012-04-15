@@ -15,6 +15,8 @@ install_requires = [
 	'pygithub3',
 	'biplist',
 	'pbs',
+	'iso8601',
+	'pytz',
 ]
 
 
